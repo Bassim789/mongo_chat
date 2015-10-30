@@ -1,2 +1,2 @@
 # mongo_chat
-basic chat in javacript, meteor, mongodb
+basic chat in javascript, meteor, mongodb
