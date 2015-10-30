@@ -6,17 +6,17 @@ html, body{
 	padding: 0px;
 	text-align: center;
 	color: white;
-    font-size: 14pt;
-    font-family: "Lato","Helvetica Neue",Helvetica,sans-serif;
-    font-weight: 300;
-    word-spacing: 0.3em;
-    background-color: #66CCFF;
+	font-size: 14pt;
+	font-family: "Lato","Helvetica Neue",Helvetica,sans-serif;
+	font-weight: 300;
+	word-spacing: 0.3em;
+	background-color: #66CCFF;
 }
 
 
 @font-face {
-    font-family: title;
-    src: url(other/billabong.ttf);
+	font-family: title;
+	src: url(other/billabong.ttf);
 }
 
 
@@ -108,7 +108,7 @@ html, body{
 
 
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color:    #ddd;
+	color:    #ddd;
 }
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
    color:    #ddd;
@@ -154,14 +154,14 @@ html, body{
 /* RESPONSIVE */
 
 @media all and (max-width: 800px){
-    #btn_send{
+	#btn_send{
 		display: inline-block;
 	}
 }
 
 
 @media all and (max-width: 500px){
-    #main_title{
+	#main_title{
 		font-size: 40px;
 	}
 	#loading{

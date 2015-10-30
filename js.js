@@ -47,12 +47,12 @@ if (Meteor.isClient)
 	({
 
 		// CATCH CLICK ON SEND BTN
-	    'click #btn_send': function()
-	    {
-	    	send_message();
-	    },
+		'click #btn_send': function()
+		{
+			send_message();
+		},
 
-	    // CATCH KEYDOWN IN TEXTAREA
+		// CATCH KEYDOWN IN TEXTAREA
 		'keydown #input_message': function(event)
 		{
 			if(isSend(event))
@@ -92,21 +92,21 @@ if (Meteor.isClient)
 
 	// GET COOKIE
 	function getCookie(cname) {
-	    var name = cname + "=";
-	    var ca = document.cookie.split(';');
-	    for(var i = 0; i < ca.length; i++)
-	    {
-	        var c = ca[i];
-	        while (c.charAt(0)==' ')
-	        {
-	        	c = c.substring(1);
-	        } 
-	        if (c.indexOf(name) == 0)
-	        {
-	        	return c.substring(name.length,c.length);
-	        }
-	    }
-	    return "";
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for(var i = 0; i < ca.length; i++)
+		{
+			var c = ca[i];
+			while (c.charAt(0)==' ')
+			{
+				c = c.substring(1);
+			} 
+			if (c.indexOf(name) == 0)
+			{
+				return c.substring(name.length,c.length);
+			}
+		}
+		return "";
 	}
 
 
@@ -115,8 +115,8 @@ if (Meteor.isClient)
 	{
 		str = String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 		var breakTag = '<br>';
-	    str = (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
-	    return str;
+		str = (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+		return str;
 	}
 
 
