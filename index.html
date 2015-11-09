@@ -1,0 +1,113 @@
+<head>
+	<title>MONGO Chat</title>
+	<link rel="shortcut icon" href="other/shortcut_icon.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+	<meta charset="utf-8">
+	<link rel="stylesheet" id="x-font-custom-css" href="other/lato_font.css" type="text/css" media="all">
+</head>
+<body>
+	<div id="main_title">
+		MONGO Chat
+	</div>
+	<div id="body_inner">
+		<div id="stat">
+			<div class="stat_div" id="nb_pseudo">{{nb_pseudo}}<br>users</div>
+			<div class="stat_div" id="nb_message">{{nb_message}}<br>msgs</div>
+			<div class="stat_div" id="nb_char">{{nb_char}}<br>chars</div>
+		</div>
+		<div id="close_ranking"></div>
+		<div id="ranking_pseudo" class="ranking">
+			{{#each ranks_pseudo}}
+				{{> rank_pseudo}}
+			{{/each}}
+		</div>
+		<div id="ranking_message" class="ranking">
+			{{#each ranks_message}}
+				{{> rank_message}}
+			{{/each}}
+		</div>
+		<div id="ranking_char" class="ranking">
+			{{#each ranks_char}}
+				{{> rank_char}}
+			{{/each}}
+		</div>
+		<input class="input_base" id="input_pseudo" type="text" placeholder="Pseudo">
+		<br>
+		<textarea class="input_base" id="input_message" placeholder="Message" rows="2"></textarea>
+		<div class="btn" id="btn_send">Send</div>
+		<div id="message_list">
+			{{#each messages}}
+				{{> message}}
+			{{/each}}
+		</div>
+	</div>
+</body>
+
+
+<!-- MESSAGE TEMPLATE -->
+<template name="message" >
+	<div class="row_message">
+		<div class="header_message">
+			<div class="pseudo_message">
+				{{pseudo_message}}
+			</div>
+			<div class="timestamp_message">
+				{{formatDate timestamp_message}}
+			</div>
+		</div>
+		<div class="text_message">
+			{{{formatText text_message}}}
+		</div>
+	</div>
+</template>
+
+
+
+<!-- RANKING PSEUDO TEMPLATE -->
+<template name="rank_pseudo" >
+	<div class="ranking_row">
+		<div class="ranking_cell ranking_pseudo">
+			{{index}}) {{pseudo_user}}
+		</div>
+		<div class="ranking_cell">
+			{{nb_message}}
+		</div>
+		<div class="ranking_cell">
+			{{nb_char}}
+		</div>
+	</div>
+</template>
+
+
+<!-- RANKING MESSAGE TEMPLATE -->
+<template name="rank_message" >
+	<div class="ranking_row">
+		<div class="ranking_cell ranking_pseudo">
+			{{index}}) {{pseudo_user}}
+		</div>
+		<div class="ranking_cell">
+			{{nb_message}}
+		</div>
+		<div class="ranking_cell">
+			{{nb_char}}
+		</div>
+	</div>
+</template>
+
+
+<!-- RANKING CHAR TEMPLATE -->
+<template name="rank_char" >
+	<div class="ranking_row">
+		<div class="ranking_cell ranking_pseudo">
+			{{index}}) {{pseudo_user}}
+		</div>
+		<div class="ranking_cell">
+			{{nb_message}}
+		</div>
+		<div class="ranking_cell">
+			{{nb_char}}
+		</div>
+	</div>
+</template>
+
+
