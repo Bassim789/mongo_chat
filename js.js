@@ -32,17 +32,28 @@ if (Meteor.isClient)
 			return Message.find({}, {sort: [["timestamp_message", "desc"]]});
 		},
 
-		ranks: function() {
-			return User.find({}, {sort: [[Session.get("ranking_field"), Session.get("ranking_order")]]}).map(function(rank_message, index) {
-			  return _.extend(rank_message, {index: index + 1});
+
+		// GET RANKING FROM MONGO
+		ranks: function()
+		{
+			// SORT BY VARIABLE FIELD AND ORDER
+			return User.find({}, {sort: [[Session.get("ranking_field"), Session.get("ranking_order")]]})
+
+
+			// ADD INDEX START FROM 1
+			.map(function(rank_message, index)
+			{
+				return _.extend(rank_message, {index: index + 1});
 			});
 		},
+
 
 		// GET STAT FROM MONGO
 		nb_pseudo: function()
 		{
 			return User.find().count();
 		},
+
 
 		// GET STAT FROM MONGO
 		nb_message: function()
@@ -56,6 +67,7 @@ if (Meteor.isClient)
 			return total;
 
 		},
+
 
 		// GET STAT FROM MONGO
 		nb_char: function()
