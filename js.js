@@ -15,7 +15,7 @@ if (Meteor.isClient)
 {
 
 	// SET DEFAULT RANKING
-	updateRanking("nb_message", "desc", "start");
+	updateRanking("#nb_message", "nb_message", "desc", "start");
 	
 
 	// GET DATABASE UPDATE
@@ -112,6 +112,7 @@ if (Meteor.isClient)
 		// CLICK ON CLOSE RANKING
 		'click #close_ranking': function()
 		{
+			unselect_all_stat_div();
 			$('#ranking').hide();
 			$('#close_ranking').hide();
 
@@ -121,21 +122,21 @@ if (Meteor.isClient)
 		// CLICK ON STAT PSEUDO
 		'click #nb_pseudo': function()
 		{
-			updateRanking("pseudo_user", "asc");
+			updateRanking("#nb_pseudo", "pseudo_user", "asc");
 		},
 
 
 		// CLICK ON STAT MESSAGE
 		'click #nb_message': function()
 		{
-			updateRanking("nb_message");
+			updateRanking("#nb_message", "nb_message");
 		},
 
 
 		// CLICK ON STAT CHAR
 		'click #nb_char': function()
 		{
-			updateRanking("nb_char");
+			updateRanking("#nb_char", "nb_char");
 		},
 
 
@@ -209,16 +210,29 @@ if (Meteor.isClient)
 
 
 	// UPDATE RANKING
-	function updateRanking(field, order, moment)
+	function updateRanking(stat_div, field, order, moment)
 	{
 		order = order || "desc";
 		Session.set("ranking_field", field);
 		Session.set("ranking_order", order);
+		unselect_all_stat_div();
+		$(stat_div).addClass('stat_div_select');
 		if (moment != "start")
 		{
 			$('#ranking').show();
 			$('#close_ranking').show();
 		}
+	}
+
+
+	// UNSELECT ALL STAT DIV
+	function unselect_all_stat_div()
+	{
+		var stats_div = ['#nb_pseudo', '#nb_message', '#nb_char'];
+		stats_div.forEach(function(stat_div)
+		{
+			$(stat_div).removeClass('stat_div_select');
+		});
 	}
 
 
