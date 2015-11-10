@@ -10,7 +10,8 @@ id_textarea = "#input_message";
 
 
 stat_column = 'nb_char';
-
+ranking_field = "nb_message";
+ranking_order = "desc";
 
 // ON CLIENT SIDE
 if (Meteor.isClient)
@@ -31,32 +32,11 @@ if (Meteor.isClient)
 			return Message.find({}, {sort: [["timestamp_message", "desc"]]});
 		},
 
-		// GET STAT FROM MONGO
-		ranks_pseudo: function()
-		{
-			return User.find({}, {sort: [['pseudo_user', "asc"]]}).map(function(rank_message, index) {
+		ranks: function() {
+			return User.find({}, {sort: [[Session.get("ranking_field"), Session.get("ranking_order")]]}).map(function(rank_message, index) {
 			  return _.extend(rank_message, {index: index + 1});
 			});
 		},
-
-
-		// GET STAT FROM MONGO
-		ranks_message: function()
-		{	
-			return User.find({}, {sort: [['nb_message', "desc"]]}).map(function(rank_message, index) {
-				return _.extend(rank_message, {index: index + 1});
-			});
-		},
-
-
-		// GET STAT FROM MONGO
-		ranks_char: function()
-		{
-			return User.find({}, {sort: [['nb_char', "desc"]]}).map(function(rank_message, index) {
-				return _.extend(rank_message, {index: index + 1});
-			});
-		},
-
 
 		// GET STAT FROM MONGO
 		nb_pseudo: function()
@@ -66,7 +46,7 @@ if (Meteor.isClient)
 
 		// GET STAT FROM MONGO
 		nb_message: function()
-		{ 
+		{
 
 			var total = 0;
 			User.find().map(function(doc)
@@ -88,7 +68,7 @@ if (Meteor.isClient)
 			return total;
 		}
 
-	
+
 	});
 
 	Template.registerHelper('formatDate', function(date)
@@ -100,7 +80,7 @@ if (Meteor.isClient)
 	{
 
 		return htmlEntities_br(str);
-		
+
 	});
 
 
@@ -128,21 +108,21 @@ if (Meteor.isClient)
 		// CLICK ON STAT PSEUDO
 		'click #nb_pseudo': function()
 		{
-			show_ranking('#ranking_pseudo');
+			updateRanking("pseudo_user", "asc");
 		},
 
 
 		// CLICK ON STAT MESSAGE
 		'click #nb_message': function()
 		{
-			show_ranking('#ranking_message');
+			updateRanking("nb_message");
 		},
 
 
 		// CLICK ON STAT CHAR
 		'click #nb_char': function()
 		{
-			show_ranking('#ranking_char');
+			updateRanking("nb_char");
 		},
 
 
@@ -194,7 +174,7 @@ if (Meteor.isClient)
 			while (c.charAt(0)==' ')
 			{
 				c = c.substring(1);
-			} 
+			}
 			if (c.indexOf(name) == 0)
 			{
 				return c.substring(name.length,c.length);
@@ -211,6 +191,12 @@ if (Meteor.isClient)
 		var breakTag = '<br>';
 		str = (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 		return str;
+	}
+
+	function updateRanking(field, order) {
+		order = order || "desc";
+		Session.set("ranking_field", field);
+		Session.set("ranking_order", order);
 	}
 
 
@@ -280,12 +266,6 @@ if (Meteor.isClient)
 		});
 	}
 
-	function show_ranking(id)
-	{
-		$('#close_ranking').show();
-		hide_all_stat();
-		$(id).show();
-	}
 
 
 
