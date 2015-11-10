@@ -10,13 +10,13 @@ id_textarea = "#input_message";
 
 
 stat_column = 'nb_char';
-ranking_field = "nb_message";
-ranking_order = "desc";
 
 // ON CLIENT SIDE
 if (Meteor.isClient)
 {
 
+	updateRanking("nb_message", "desc");
+	
 	// GET DATABASE UPDATE
 	Meteor.subscribe("message");
 	Meteor.subscribe("user");
