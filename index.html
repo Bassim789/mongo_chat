@@ -16,19 +16,9 @@
 			<div class="stat_div" id="nb_char">{{nb_char}}<br>chars</div>
 		</div>
 		<div id="close_ranking"></div>
-		<div id="ranking_pseudo" class="ranking">
-			{{#each ranks_pseudo}}
-				{{> rank_pseudo}}
-			{{/each}}
-		</div>
-		<div id="ranking_message" class="ranking">
-			{{#each ranks_message}}
-				{{> rank_message}}
-			{{/each}}
-		</div>
-		<div id="ranking_char" class="ranking">
-			{{#each ranks_char}}
-				{{> rank_char}}
+		<div id="ranking" class="ranking">
+			{{#each ranks}}
+				{{> rank}}
 			{{/each}}
 		</div>
 		<input class="input_base" id="input_pseudo" type="text" placeholder="Pseudo">
@@ -62,9 +52,7 @@
 </template>
 
 
-
-<!-- RANKING PSEUDO TEMPLATE -->
-<template name="rank_pseudo" >
+<template name="rank" >
 	<div class="ranking_row">
 		<div class="ranking_cell ranking_pseudo">
 			{{index}}) {{pseudo_user}}
@@ -77,37 +65,3 @@
 		</div>
 	</div>
 </template>
-
-
-<!-- RANKING MESSAGE TEMPLATE -->
-<template name="rank_message" >
-	<div class="ranking_row">
-		<div class="ranking_cell ranking_pseudo">
-			{{index}}) {{pseudo_user}}
-		</div>
-		<div class="ranking_cell">
-			{{nb_message}}
-		</div>
-		<div class="ranking_cell">
-			{{nb_char}}
-		</div>
-	</div>
-</template>
-
-
-<!-- RANKING CHAR TEMPLATE -->
-<template name="rank_char" >
-	<div class="ranking_row">
-		<div class="ranking_cell ranking_pseudo">
-			{{index}}) {{pseudo_user}}
-		</div>
-		<div class="ranking_cell">
-			{{nb_message}}
-		</div>
-		<div class="ranking_cell">
-			{{nb_char}}
-		</div>
-	</div>
-</template>
-
-
