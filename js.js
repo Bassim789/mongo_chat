@@ -26,14 +26,14 @@ if (Meteor.isClient)
 	Template.body.helpers
 	({
 
-		// GET MESSAGES FROM MONGO
+		// GET MESSAGES
 		messages: function()
 		{
 			return Message.find({}, {sort: [["timestamp_message", "desc"]]});
 		},
 
 
-		// GET RANKING FROM MONGO
+		// GET RANKING
 		ranks: function()
 		{
 			// SORT BY VARIABLE FIELD AND ORDER
@@ -48,17 +48,16 @@ if (Meteor.isClient)
 		},
 
 
-		// GET STAT FROM MONGO
+		// GET NB USER
 		nb_pseudo: function()
 		{
 			return User.find().count();
 		},
 
 
-		// GET STAT FROM MONGO
+		// GET NB MESSAGE
 		nb_message: function()
 		{
-
 			var total = 0;
 			User.find().map(function(doc)
 			{
@@ -69,7 +68,7 @@ if (Meteor.isClient)
 		},
 
 
-		// GET STAT FROM MONGO
+		// GET NB CHAR
 		nb_char: function()
 		{
 			var total = 0;
