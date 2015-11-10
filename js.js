@@ -17,7 +17,7 @@ if (Meteor.isClient)
 	// SET DEFAULT RANKING
 	updateRanking("nb_message", "desc", "start");
 	
-	
+
 	// GET DATABASE UPDATE
 	Meteor.subscribe("message");
 	Meteor.subscribe("user");
@@ -178,7 +178,8 @@ if (Meteor.isClient)
 
 
 	// GET COOKIE
-	function getCookie(cname) {
+	function getCookie(cname)
+	{
 		var name = cname + "=";
 		var ca = document.cookie.split(';');
 		for(var i = 0; i < ca.length; i++)
@@ -208,7 +209,8 @@ if (Meteor.isClient)
 
 
 	// UPDATE RANKING
-	function updateRanking(field, order, moment) {
+	function updateRanking(field, order, moment)
+	{
 		order = order || "desc";
 		Session.set("ranking_field", field);
 		Session.set("ranking_order", order);
@@ -224,11 +226,13 @@ if (Meteor.isClient)
 	function isSend(event)
 	{
 		var is = false;
+
 		// CATCH ENTER WITHOUT SHIFT ON DESKTOP
 		if(event.keyCode == 13 && !event.shiftKey && on_desktop())
 		{
 			is = true;
 		}
+
 		return is;
 	}
 
@@ -245,7 +249,8 @@ if (Meteor.isClient)
 	{
 		var rows = $(id).val().split("\n");
 		var len = 30;
-		if (on_desktop()){
+		if (on_desktop())
+		{
 			len = 80;
 		}
 		var compteur = 1;
@@ -283,13 +288,6 @@ if (Meteor.isClient)
 // SERVER SIDE
 if (Meteor.isServer)
 {
-
-	// ON STARTUP
-	Meteor.startup(function()
-	{
-
-	});
-
 
 	// NEW MESSAGE UPDATE
 	Meteor.publish("message", function()
