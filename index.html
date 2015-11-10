@@ -16,14 +16,14 @@
 			<div class="stat_div" id="nb_char">{{nb_char}}<br>chars</div>
 		</div>
 		<div id="close_ranking"></div>
-		<div id="ranking" class="ranking">
+		<div id="ranking">
 			{{#each ranks}}
 				{{> rank}}
 			{{/each}}
 		</div>
 		<input class="input_base" id="input_pseudo" type="text" placeholder="Pseudo">
 		<br>
-		<textarea class="input_base" id="input_message" placeholder="Message" rows="2"></textarea>
+		<textarea class="input_base" id="input_message" placeholder="Message" rows="2" maxlength="9999"></textarea>
 		<div class="btn" id="btn_send">Send</div>
 		<div id="message_list">
 			{{#each messages}}
@@ -52,6 +52,7 @@
 </template>
 
 
+<!-- RANKING TEMPLATE -->
 <template name="rank" >
 	<div class="ranking_row">
 		<div class="ranking_cell ranking_pseudo">

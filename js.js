@@ -1,21 +1,21 @@
 
 
-// CONNECT TO DATABASE
+// CONNECT TO DATABASE COLLECTIONS
 Message = new Mongo.Collection('message');
 User = new Mongo.Collection('user');
 
-// SET ID
+
+// SET ID INPUT HTML
 id_pseudo = "#input_pseudo";
 id_textarea = "#input_message";
 
-
-stat_column = 'nb_char';
 
 // ON CLIENT SIDE
 if (Meteor.isClient)
 {
 
-	updateRanking("nb_message", "desc");
+	// SET DEFAULT RANKING
+	updateRanking("nb_message", "desc", "start");
 	
 	// GET DATABASE UPDATE
 	Meteor.subscribe("message");
@@ -68,21 +68,22 @@ if (Meteor.isClient)
 			return total;
 		}
 
-
 	});
 
+
+	// FORMATE DATE
 	Template.registerHelper('formatDate', function(date)
 	{
 		return moment(date).format('YYYY-MM-DD HH:mm:ss');
 	});
 
+
+
+	// FORMATE MESSAGE TEXTE
 	Template.registerHelper('formatText', function(str)
 	{
-
 		return htmlEntities_br(str);
-
 	});
-
 
 
 	// EVENT
@@ -99,7 +100,7 @@ if (Meteor.isClient)
 		// CLICK ON CLOSE RANKING
 		'click #close_ranking': function()
 		{
-			hide_all_stat();
+			$('#ranking').hide();
 			$('#close_ranking').hide();
 
 		},
@@ -150,7 +151,7 @@ if (Meteor.isClient)
 
 
 
-		// ON START
+	// ON START
 	$( window ).load(function()
 	{
 		if (on_desktop())
@@ -193,10 +194,17 @@ if (Meteor.isClient)
 		return str;
 	}
 
-	function updateRanking(field, order) {
+
+	// UPDATE RANKING
+	function updateRanking(field, order, moment) {
 		order = order || "desc";
 		Session.set("ranking_field", field);
 		Session.set("ranking_order", order);
+		if (moment != "start")
+		{
+			$('#ranking').show();
+			$('#close_ranking').show();
+		}
 	}
 
 
@@ -256,22 +264,6 @@ if (Meteor.isClient)
 		document.cookie = 'pseudo=' + pseudo + '; expires=Sun, 01 Feb 2019 00:00:00 UTC; path=/';
 	}
 
-
-
-	function hide_all_stat()
-	{
-		var stats = ['#ranking_pseudo', '#ranking_message', '#ranking_char'];
-		stats.forEach(function(stat) {
-			$(stat).hide();
-		});
-	}
-
-
-
-
-
-
-
 }
 
 
@@ -279,7 +271,9 @@ if (Meteor.isClient)
 // SERVER SIDE
 if (Meteor.isServer)
 {
-	Meteor.startup(function ()
+
+	// ON STARTUP
+	Meteor.startup(function()
 	{
 
 	});
@@ -295,10 +289,11 @@ if (Meteor.isServer)
 	// NEW RANKING UPDATE
 	Meteor.publish("user", function()
 	{
-		return User.find({}, {sort: [[stat_column,"desc"]]});
+		return User.find({}, {sort: [["nb_message","desc"]]});
 	});
 
 }
+
 
 
 // METHODE
@@ -333,7 +328,5 @@ Meteor.methods
 
 	}
 
-
 });
-
 

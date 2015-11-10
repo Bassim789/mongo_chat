@@ -20,6 +20,8 @@ body{
 }
 
 
+/* MAIN */
+
 #main_title{
 	font-family: title;
 	font-size: 70px;
@@ -77,19 +79,8 @@ body{
 	border-bottom: 1px solid #fff;
 }
 
-#ranking_message {
-    display: none;
-}
-
-#ranking_pseudo {
-    display: none;
-}
-
-#ranking_char {
-    display: none;
-}
-
-.ranking{
+#ranking{
+	display: none;
 	margin-bottom: 50px;
 }
 
@@ -119,18 +110,18 @@ body{
 
 #close_ranking{
 	display: none;
-    float:right;
-    cursor:pointer;
-    color: #fff;
-    border-radius: 30px;
-    font-size: 41px;
-    font-weight: lighter;
-    line-height: 0px;
-    padding: 11px 3px;       
+	float:right;
+	cursor:pointer;
+	color: #fff;
+	border-radius: 30px;
+	font-size: 41px;
+	font-weight: lighter;
+	line-height: 0px;
+	padding: 11px 3px;
 }
 
 #close_ranking:before {
-    content: "×";
+	content: "×";
 }
 
 
@@ -199,15 +190,15 @@ body{
 	color:    #ddd;
 }
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color:    #ddd;
-   opacity:  1;
+	color:    #ddd;
+	opacity:  1;
 }
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color:    #ddd;
-   opacity:  1;
+	color:    #ddd;
+	opacity:  1;
 }
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color:    #ddd;
+	color:    #ddd;
 }
 
 
