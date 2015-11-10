@@ -17,6 +17,7 @@ if (Meteor.isClient)
 	// SET DEFAULT RANKING
 	updateRanking("nb_message", "desc", "start");
 	
+	
 	// GET DATABASE UPDATE
 	Meteor.subscribe("message");
 	Meteor.subscribe("user");
