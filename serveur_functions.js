@@ -6,21 +6,25 @@ User = new Mongo.Collection('user');
 
 
 // SET ID INPUT HTML
-id_pseudo = "#input_pseudo";
-id_textarea = "#input_message";
+id_pseudo = '#input_pseudo';
+id_textarea = '#input_message';
+
+// SET TOTAL MESSAGE NUMBER INIT
+first_load = true;
 
 
 // ON CLIENT SIDE
 if (Meteor.isClient)
 {
 
-	// SET DEFAULT RANKING
-	updateRanking("#nb_message", "nb_message", "desc", "start");
-	
-
 	// GET DATABASE UPDATE
-	Meteor.subscribe("message");
-	Meteor.subscribe("user");
+	Meteor.subscribe('message');
+	Meteor.subscribe('user');
+
+
+	// SET DEFAULT SESSION VAR
+	Session.set('ranking_field', 'nb_message');
+	Session.set('ranking_order', 'desc');
 
 
 	// HELPERS
@@ -30,7 +34,18 @@ if (Meteor.isClient)
 		// GET MESSAGES
 		messages: function()
 		{
-			return Message.find({}, {sort: [["timestamp_message", "desc"]]});
+			setTimeout(function()
+			{
+				scroll_bottom_message();
+			}, 50);
+			return Message.find
+			(
+				{}, 
+				{ 
+					sort: [['timestamp_message', 'desc']], 
+					limit: 30 + Session.get('new_messages_number')
+				}
+			).fetch().reverse(); 
 		},
 
 
@@ -38,7 +53,10 @@ if (Meteor.isClient)
 		ranks: function()
 		{
 			// SORT BY VARIABLE FIELD AND ORDER
-			return User.find({}, {sort: [[Session.get("ranking_field"), Session.get("ranking_order")]]})
+			return User.find
+			(
+				{}, { sort: [[Session.get('ranking_field'), Session.get('ranking_order')]] }
+			)
 
 
 			// ADD INDEX START FROM 1
@@ -64,6 +82,17 @@ if (Meteor.isClient)
 			{
 				total += doc.nb_message;
 			});
+			if (first_load && total > 0)
+			{
+				Session.set('new_messages_number', 0);
+				total_messages_number_first = total;
+				first_load = false;
+			}
+			else if (total > 0)
+			{
+				var new_messages_number = total - total_messages_number_first;
+				Session.set('new_messages_number', new_messages_number);
+			}
 			return total;
 
 		},
@@ -85,8 +114,10 @@ if (Meteor.isClient)
 
 	// FORMATE DATE
 	Template.registerHelper('formatDate', function(date)
-	{
-		return moment(date).format('YYYY-MM-DD HH:mm:ss');
+	{	
+		var date = moment(date).format('YYYY-MM-DD HH:mm:ss');
+		var date_two_lines = date.substring(0,10) + '\n' + date.substring(10,19);
+		return htmlEntities_br(date_two_lines);
 	});
 
 
@@ -115,6 +146,9 @@ if (Meteor.isClient)
 			unselect_all_stat_div();
 			$('#ranking').hide();
 			$('#close_ranking').hide();
+			$('#message_list').show();
+			$('.body_inner').removeClass('white');
+			scroll_bottom_message();
 
 		},
 
@@ -122,21 +156,21 @@ if (Meteor.isClient)
 		// CLICK ON STAT PSEUDO
 		'click #nb_pseudo': function()
 		{
-			updateRanking("#nb_pseudo", "pseudo_user", "asc");
+			updateRanking('#nb_pseudo', 'pseudo_user', 'asc');
 		},
 
 
 		// CLICK ON STAT MESSAGE
 		'click #nb_message': function()
 		{
-			updateRanking("#nb_message", "nb_message");
+			updateRanking('#nb_message', 'nb_message');
 		},
 
 
 		// CLICK ON STAT CHAR
 		'click #nb_char': function()
 		{
-			updateRanking("#nb_char", "nb_char");
+			updateRanking('#nb_char', 'nb_char');
 		},
 
 
@@ -157,11 +191,10 @@ if (Meteor.isClient)
 			{
 				$(id_textarea).val('');
 			}
-			adapt_textarea_height(id_textarea);
+			adapt_textarea_height();
 		}
 
 	});
-
 
 
 	// ON START
@@ -175,34 +208,16 @@ if (Meteor.isClient)
 		// SET PSEUDO COOKIE
 		$(id_pseudo).val(getCookie('pseudo'));
 
+
+		adapt_textarea_height();
+
 	});
-
-
-	// GET COOKIE
-	function getCookie(cname)
-	{
-		var name = cname + "=";
-		var ca = document.cookie.split(';');
-		for(var i = 0; i < ca.length; i++)
-		{
-			var c = ca[i];
-			while (c.charAt(0)==' ')
-			{
-				c = c.substring(1);
-			}
-			if (c.indexOf(name) == 0)
-			{
-				return c.substring(name.length,c.length);
-			}
-		}
-		return "";
-	}
 
 
 	// HTML ENTITIES
 	function htmlEntities_br(str)
 	{
-		str = String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+		str = String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&quot;');
 		var breakTag = '<br>';
 		str = (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 		return str;
@@ -210,73 +225,18 @@ if (Meteor.isClient)
 
 
 	// UPDATE RANKING
-	function updateRanking(stat_div, field, order, moment)
+	function updateRanking(stat_div, field, order)
 	{
-		order = order || "desc";
-		Session.set("ranking_field", field);
-		Session.set("ranking_order", order);
+		order = order || 'desc';
+		Session.set('ranking_field', field);
+		Session.set('ranking_order', order);
 		unselect_all_stat_div();
 		$(stat_div).addClass('stat_div_select');
-		if (moment != "start")
-		{
-			$('#ranking').show();
-			$('#close_ranking').show();
-		}
-	}
-
-
-	// UNSELECT ALL STAT DIV
-	function unselect_all_stat_div()
-	{
-		var stats_div = ['#nb_pseudo', '#nb_message', '#nb_char'];
-		stats_div.forEach(function(stat_div)
-		{
-			$(stat_div).removeClass('stat_div_select');
-		});
-	}
-
-
-	// CHECK IF MESSAGE IS SEND ON PRESS ENTER
-	function isSend(event)
-	{
-		var is = false;
-
-		// CATCH ENTER WITHOUT SHIFT ON DESKTOP
-		if(event.keyCode == 13 && !event.shiftKey && on_desktop())
-		{
-			is = true;
-		}
-
-		return is;
-	}
-
-
-	// CHECK IF DESKTOP OR MOBILE
-	function on_desktop()
-	{
-		return $(window).width() > 800;
-	}
-
-
-	// ADAPT TEXTAREA HEIGHT
-	function adapt_textarea_height(id)
-	{
-		var rows = $(id).val().split("\n");
-		var len = 30;
-		if (on_desktop())
-		{
-			len = 80;
-		}
-		var compteur = 1;
-		for (var i = rows.length - 1; i >= 0; i--)
-		{
-			if (rows[i].length > len)
-			{
-				compteur += Math.round((rows[i].length)/len);
-			}
-			compteur += 1;
-		};
-		$(id).prop("rows", compteur);
+		$('#ranking').show();
+		$('#close_ranking').show();
+		$('#message_list').hide();
+		$('.body_inner').addClass('white');
+		$('body,html').animate({scrollTop: 0}, 500);
 	}
 
 
@@ -290,9 +250,16 @@ if (Meteor.isClient)
 		{
 			$(id_textarea).focus();
 		}
-		adapt_textarea_height(id_textarea);
-		Meteor.call("mongo_send_message", pseudo, text);
+		adapt_textarea_height();
 		document.cookie = 'pseudo=' + pseudo + '; expires=Sun, 01 Feb 2019 00:00:00 UTC; path=/';
+		send_message_call(pseudo, text);
+	}
+
+
+	// SEND MESSAGE CALL
+	function send_message_call(pseudo, text)
+	{
+		Meteor.call('mongo_send_message', pseudo, text);
 	}
 
 }
@@ -304,16 +271,26 @@ if (Meteor.isServer)
 {
 
 	// NEW MESSAGE UPDATE
-	Meteor.publish("message", function()
+	Meteor.publish('message', function()
 	{
-		return Message.find({}, {sort: [["timestamp_message","desc"]]});
+		return Message.find
+		(
+			{}, 
+			{
+				sort: [['timestamp_message','desc']],
+				limit: 30 + Session.get('new_messages_number')
+			}
+		).fetch().reverse();
 	});
 
 
 	// NEW RANKING UPDATE
-	Meteor.publish("user", function()
+	Meteor.publish('user', function()
 	{
-		return User.find({}, {sort: [["nb_message","desc"]]});
+		return User.find
+		(
+			{}, { sort: [['nb_message','desc']] }
+		);
 	});
 
 }
@@ -351,6 +328,7 @@ Meteor.methods
 		)
 
 	}
+
 
 });
 

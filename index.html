@@ -4,33 +4,41 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 	<meta charset="utf-8">
 	<link rel="stylesheet" id="x-font-custom-css" href="other/lato_font.css" type="text/css" media="all">
+	<script src="client_functions.js"></script>
 </head>
 <body>
-	<div id="main_title">
-		MONGO Chat
-	</div>
-	<div id="body_inner">
-		<div id="stat">
-			<div class="stat_div" id="nb_pseudo">{{nb_pseudo}}<br>users</div>
-			<div class="stat_div" id="nb_message">{{nb_message}}<br>msgs</div>
-			<div class="stat_div" id="nb_char">{{nb_char}}<br>chars</div>
+	<div id="header_fixed">
+		<div id="main_title">
+			MONGO Chat
 		</div>
-		<div id="close_ranking"></div>
+		<div class="body_inner">
+			<div id="stat">
+				<div class="stat_div" id="nb_pseudo">{{nb_pseudo}}<br>users</div>
+				<div class="stat_div" id="nb_message">{{nb_message}}<br>msgs</div>
+				<div class="stat_div" id="nb_char">{{nb_char}}<br>chars</div>
+			</div>
+			<div id="close_ranking"></div>
+		</div>
+	</div>
+	<div class="body_inner">
 		<div id="ranking">
 			{{#each ranks}}
 				{{> rank}}
 			{{/each}}
 		</div>
-		<input class="input_base" id="input_pseudo" type="text" placeholder="Pseudo">
-		<br>
-		<textarea class="input_base" id="input_message" placeholder="Message" rows="2" maxlength="9999"></textarea>
-		<div class="btn" id="btn_send">Send</div>
 		<div id="message_list">
 			{{#each messages}}
 				{{> message}}
 			{{/each}}
 		</div>
+		<div id="input_box">
+			<input class="input_base" id="input_pseudo" type="text" placeholder="Pseudo">
+			<div class="btn" id="btn_send"> > </div>
+			<br>
+			<textarea class="input_base" id="input_message" placeholder="Message" maxlength="9999"></textarea>
+		</div>
 	</div>
+	<div id="background"></div>
 </body>
 
 
@@ -42,12 +50,15 @@
 				{{pseudo_message}}
 			</div>
 			<div class="timestamp_message">
-				{{formatDate timestamp_message}}
+				{{{formatDate timestamp_message}}}
 			</div>
 		</div>
 		<div class="text_message">
 			{{{formatText text_message}}}
 		</div>
+	</div>
+	<div class="row_message_separator">
+		<div class="bottom_triangle"></div>
 	</div>
 </template>
 
