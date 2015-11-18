@@ -79,7 +79,7 @@ function scroll_bottom_message()
 // ADAPT TEXTAREA HEIGHT
 function adapt_textarea_height()
 {
-	var rows = $(id_textarea).val().split('\n');
+	var rows = $('#input_message').val().split('\n');
 	var len = 30;
 	if (on_desktop())
 	{
@@ -94,7 +94,7 @@ function adapt_textarea_height()
 		}
 		compteur += 1;
 	};
-	$(id_textarea).prop('rows', compteur);
+	$('#input_message').prop('rows', compteur);
 }
 
 

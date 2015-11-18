@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" id="x-font-custom-css" href="other/lato_font.css" type="text/css" media="all">
 	<script src="client_functions.js"></script>
+	<script src="client_functions_special.js"></script>
 </head>
 <body>
 	<div id="header_fixed">
@@ -13,9 +14,9 @@
 		</div>
 		<div class="body_inner">
 			<div id="stat">
-				<div class="stat_div" id="nb_pseudo">{{nb_pseudo}}<br>users</div>
-				<div class="stat_div" id="nb_message">{{nb_message}}<br>msgs</div>
-				<div class="stat_div" id="nb_char">{{nb_char}}<br>chars</div>
+				<div class="stat_div" id="nb_pseudo">{{stat.nb_pseudo}}<br>users</div>
+				<div class="stat_div" id="nb_message">{{stat.nb_message}}<br>msgs</div>
+				<div class="stat_div" id="nb_char">{{stat.nb_char}}<br>chars</div>
 			</div>
 			<div id="close_ranking"></div>
 		</div>
@@ -32,14 +33,17 @@
 			{{/each}}
 		</div>
 		<div id="input_box">
-			<input class="input_base" id="input_pseudo" type="text" placeholder="Pseudo">
+			<input class="input_base" id="input_pseudo" type="text" placeholder="Pseudo" maxlength="33">
 			<div class="btn" id="btn_send"> > </div>
 			<br>
 			<textarea class="input_base" id="input_message" placeholder="Message" maxlength="9999"></textarea>
 		</div>
 	</div>
 	<div id="background"></div>
+	<script src="event.js"></script>
 </body>
+
+
 
 
 <!-- MESSAGE TEMPLATE -->
@@ -63,6 +67,8 @@
 </template>
 
 
+
+
 <!-- RANKING TEMPLATE -->
 <template name="rank" >
 	<div class="ranking_row">
@@ -77,3 +83,6 @@
 		</div>
 	</div>
 </template>
+
+
+
