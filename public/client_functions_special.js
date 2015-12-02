@@ -78,7 +78,7 @@ function send_message_call(pseudo, text)
 
 // GET MORE MESSAGES
 function get_more_messages()
-{
+{	
 	more_messages = true;
 	Session.set('messages_limit', Session.get('messages_limit') + 30);
 }
@@ -121,8 +121,9 @@ function scroll_or_fixe()
 			if (total_messages_number_first < Session.get('messages_limit'))
 			{
 				top_message = true;
+				console.log('top');
 			}
-		}, 5);
+		}, 500);
 	}
 
 	else if (Session.get('new_messages_number') != new_messages_number_before)
@@ -132,14 +133,6 @@ function scroll_or_fixe()
 			new_messages_number_before = Session.get('new_messages_number');
 			scroll_bottom_message();
 		}, 50);
-	}
-	else if (first_load)
-	{
-		setTimeout(function()
-		{	
-			scroll_bottom_message();
-		}, 50);
-		
 	}
 }
 

@@ -15,16 +15,32 @@ new_messages_number_before = 0;
 if (Meteor.isClient)
 {
 
-	// GET DATABASE UPDATE
-	Meteor.subscribe('message');
-	Meteor.subscribe('user');
-
-
 	// SET DEFAULT SESSION VAR
 	Session.set('ranking_field', 'nb_message');
 	Session.set('ranking_order', 'desc');
 	Session.set('new_messages_number', 0);
 	Session.set('messages_limit', 30);
+
+
+	// GET DATABASE UPDATE
+
+	Meteor.subscribe('user');
+
+	Tracker.autorun(function()
+	{
+	    Meteor.subscribe('message', Session.get('messages_limit'), Session.get('new_messages_number'), function()
+	    {
+	    	if (first_load)
+	    	{
+	    		console.log('start');
+				setTimeout(function()
+				{	
+					scroll_bottom_message();
+				}, 100);
+	    	}
+			
+		});
+	});
 
 
 	// HELPERS
@@ -37,14 +53,15 @@ if (Meteor.isClient)
 
 			scroll_or_fixe();
 
+			console.log(Session.get('messages_limit'));
+
 			return Message.find
 			(
 				{}, 
 				{ 
-					sort: [['timestamp_message', 'desc']], 
-					limit: Session.get('messages_limit') + Session.get('new_messages_number')
+					sort: [['timestamp_message', 'asc']]
 				}
-			).fetch().reverse(); 
+			);
 		},
 
 
@@ -114,16 +131,16 @@ if (Meteor.isServer)
 {
 
 	// NEW MESSAGE UPDATE
-	Meteor.publish('message', function()
+	Meteor.publish('message', function(messages_limit, new_messages_number)
 	{
 		return Message.find
 		(
 			{}, 
 			{
 				sort: [['timestamp_message','desc']],
-				limit: Session.get('messages_limit') + Session.get('new_messages_number')
+				limit: messages_limit + new_messages_number
 			}
-		).fetch().reverse();
+		);
 	});
 
 
