@@ -25,7 +25,8 @@ if (Meteor.isClient)
 	// GET DATABASE UPDATE
 
 	Meteor.subscribe('user');
-
+	
+	// SUBSCRIBE
 	Tracker.autorun(function()
 	{
 		Meteor.subscribe
