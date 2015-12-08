@@ -29,12 +29,18 @@ if (Meteor.isClient)
 	// SUBSCRIBE
 	Tracker.autorun(function()
 	{
-		Meteor.subscribe
-		(
-			'message', 
-			Session.get('messages_limit'), 
-			Session.get('new_messages_number')
-		);
+		Meteor.subscribe('message', Session.get('messages_limit'), Session.get('new_messages_number'), function()
+		{
+			if (first_load)
+			{
+				console.log('start');
+				setTimeout(function()
+				{	
+					scroll_bottom_message();
+				}, 100);
+			}
+			
+		});
 	});
 
 
