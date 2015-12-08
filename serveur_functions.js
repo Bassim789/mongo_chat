@@ -28,18 +28,12 @@ if (Meteor.isClient)
 
 	Tracker.autorun(function()
 	{
-		Meteor.subscribe('message', Session.get('messages_limit'), Session.get('new_messages_number'), function()
-		{
-			if (first_load)
-			{
-				console.log('start');
-				setTimeout(function()
-				{	
-					scroll_bottom_message();
-				}, 100);
-			}
-			
-		});
+		Meteor.subscribe
+		(
+			'message', 
+			Session.get('messages_limit'), 
+			Session.get('new_messages_number')
+		);
 	});
 
 
@@ -50,6 +44,9 @@ if (Meteor.isClient)
 		// GET MESSAGES
 		messages: function()
 		{	
+			scroll_or_fixe();
+			console.log(Session.get('messages_limit'));
+			
 			return Message.find
 			(
 				{}, 
