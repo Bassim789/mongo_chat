@@ -50,11 +50,6 @@ if (Meteor.isClient)
 		// GET MESSAGES
 		messages: function()
 		{	
-
-			scroll_or_fixe();
-
-			console.log(Session.get('messages_limit'));
-
 			return Message.find
 			(
 				{}, 
